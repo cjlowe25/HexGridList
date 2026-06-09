@@ -9,10 +9,10 @@ public class Main {
         test.createHexOptions();
         boolean chatting = true;
         while (chatting == true) {
-            System.out.println("List Of Commands:\n-----------------------------------\nGrow\nRadius\nHexagon Count\nVertex Count\nConnect Hexes\nEnd");
+            System.out.println("List Of Commands:\n-----------------------------------\nGrow\nRadius\nHexagon Count\nVertex Count\nFirst Hex\nShow Hexagon\nEnd");
             message = temp.nextLine();
             if (message.equalsIgnoreCase("Grow")) {
-                test.grow();
+                test.growManual();
             } else if (message.equalsIgnoreCase("Radius")) {
                 System.out.println("\n");
                 System.out.println(test.getRadius());
@@ -22,14 +22,16 @@ public class Main {
             } else if (message.equalsIgnoreCase("Vertex Count")) {
                 System.out.println("\n");
                 System.out.println((int) test.getVertexCount());
-            } else if (message.equalsIgnoreCase("Connect Hexes")){
-                System.out.println("\n");
-//                test.connect();
-            } else if (message.equalsIgnoreCase("End")){
+            }// else if (message.equalsIgnoreCase("Connect Hexes")){
+//                System.out.println("\n");
+////                test.connect();
+              else if (message.equalsIgnoreCase("End")){
                 chatting = false;
             } else if (message.equalsIgnoreCase("First Hex")){
                 System.out.println("\n");
                 System.out.println(test.displayCenter());
+            } else if (message.equalsIgnoreCase("Show Hexagon")){
+                test.showHexagon();
             }
         }
     }
