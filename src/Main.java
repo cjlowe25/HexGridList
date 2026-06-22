@@ -12,7 +12,7 @@ public class Main {
             System.out.println("\nList Of Commands:\n-----------------------------------\nGrow\nRadius\nHexagon Count\nVertex Count\nConnect Hexes\nFind Hexes\nFirst Hex\nEnd");
             message = temp.nextLine();
             if (message.equalsIgnoreCase("Grow")) {
-                test.grow();
+//                test.grow();
             } else if (message.equalsIgnoreCase("Radius")) {
                 System.out.println("\n");
                 System.out.println(test.getRadius());

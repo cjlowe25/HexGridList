@@ -53,46 +53,46 @@ public class HexGrid {
 
     Random rand = new Random();
 
-    public void grow() {
-
-        if (radius == 0) {
-            center = new Hexagon(3);
-            boolean finished = false;
-            ArrayList<HexCodes> removed =  new ArrayList<>();
-            while (!finished) {
-                HexCodes temp = hexOptions.get(rand.nextInt(hexOptions.size()));
-                if (temp.getColored() == 3){
-                    center.setN(temp.getNumber1());
-                    center.setNe(temp.getNumber2());
-                    center.setSe(temp.getNumber3());
-                    center.setS(temp.getNumber4());
-                    center.setSw(temp.getNumber5());
-                    center.setNw(temp.getNumber6());
-                    finished = true;
-                }
-                else{
-                    removed.add(temp);
-                    hexOptions.remove(temp);
-                }
-            }
-            hexOptions.addAll(removed);
-            allHexagons.add(center);
-            radius = 1;
-            return;
-        }
-        List<Hexagon> newRing = new ArrayList<>();
-        int count = 6 * radius;
-        for (int i = 0; i < count; i++) {
-            newRing.add(new Hexagon(0));
-        }
-        for (int i = 0; i < count; i++) {
-            Hexagon current = newRing.get(i);
-            Hexagon next = newRing.get((i + 1) % count);
-        }
-
-        allHexagons.addAll(newRing);
-        radius++;
-    }
+//    public void grow() {
+//
+//        if (radius == 0) {
+//            center = new Hexagon(3);
+//            boolean finished = false;
+//            ArrayList<HexCodes> removed =  new ArrayList<>();
+//            while (!finished) {
+//                HexCodes temp = hexOptions.get(rand.nextInt(hexOptions.size()));
+//                if (temp.getColored() == 3){
+//                    center.setN(temp.getNumber1());
+//                    center.setNe(temp.getNumber2());
+//                    center.setSe(temp.getNumber3());
+//                    center.setS(temp.getNumber4());
+//                    center.setSw(temp.getNumber5());
+//                    center.setNw(temp.getNumber6());
+//                    finished = true;
+//                }
+//                else{
+//                    removed.add(temp);
+//                    hexOptions.remove(temp);
+//                }
+//            }
+//            hexOptions.addAll(removed);
+//            allHexagons.add(center);
+//            radius = 1;
+//            return;
+//        }
+//        List<Hexagon> newRing = new ArrayList<>();
+//        int count = 6 * radius;
+//        for (int i = 0; i < count; i++) {
+//            newRing.add(new Hexagon(0));
+//        }
+//        for (int i = 0; i < count; i++) {
+//            Hexagon current = newRing.get(i);
+//            Hexagon next = newRing.get((i + 1) % count);
+//        }
+//
+//        allHexagons.addAll(newRing);
+//        radius++;
+//    }
 
     public int getRadius() {
         return radius;
