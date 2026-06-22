@@ -123,4 +123,65 @@ public class HexGrid {
 //    public void connect(){
 //        for (int i = 0; i < )
 //    }
+
+    public void connectedHexes(int vertex){
+        int size = (int)Math.sqrt((double) vertex / 6) + 1;
+        int difference = vertex - (int)(6 * Math.pow(size, 2) - 12 * size + 7);
+        System.out.println("size: " + size);
+        int a = (int)((1.0/3) * Math.pow(size, 3) + (1.0/2) * Math.pow(size, 2) - ((5.0/6) * size) + 1);
+        int b = (int)(6 * Math.pow(size + 1, 2) - (12 * size + 1) + 7);
+        System.out.println("a: " + a);
+        System.out.println("b: " + b);
+        int splits = 0;
+        if (size >= 3){
+            splits = 3 + (2 * (size - 3));
+            int code = -1;
+            int aIncrease = 1 + ((splits - 3) / 2);
+            int bIncrease = 2 + ((splits - 3) / 2);
+            int modifier = difference / splits;
+            int inner = difference % splits;
+            int limit = b + 1;
+            System.out.println("difference: " + difference);
+            System.out.println("splits: " + splits);
+            if ((inner - 3) % 2 == 1){
+                code = 0; // a, b, b + 1
+            }
+            else if ((inner - 3) % 2 == 0){
+                code = 1; // a, a + 1, b
+            }
+            else if ((inner == 2) || (inner == 1)){
+                code = 0;
+            }
+            a += (aIncrease * modifier);
+            b += (bIncrease * modifier);
+            if (inner >= 3){
+                a += 1 + ((inner - 3) / 2);
+                b += 2 + ((inner - 3) / 2);
+            }
+            else if (inner == 2){
+                b += 2;
+            }
+            else if (inner == 1){
+                b += 1;
+            }
+            System.out.println("b before: " + b);
+            b = b % limit + (3 * (size) * (size - 1) + 2);
+            System.out.println("b additive: " + (3 * (size) * (size - 1) + 2));
+            System.out.println("Code: " + code);
+            System.out.println("a: " + a);
+            System.out.println("b: " + b);
+            System.out.println("inner: " + inner);
+
+            if (code == 0){   // ab
+                System.out.println();
+            }
+            else if (code == 1){ //   aa
+                System.out.println();
+            }
+            else if (code == -1){   //in case of failure
+                System.out.println("Something went VERY wrong");
+            }
+        }
+
+    }
 }

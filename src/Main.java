@@ -9,7 +9,7 @@ public class Main {
         test.createHexOptions();
         boolean chatting = true;
         while (chatting == true) {
-            System.out.println("List Of Commands:\n-----------------------------------\nGrow\nRadius\nHexagon Count\nVertex Count\nConnect Hexes\nEnd");
+            System.out.println("\nList Of Commands:\n-----------------------------------\nGrow\nRadius\nHexagon Count\nVertex Count\nConnect Hexes\nFind Hexes\nFirst Hex\nEnd");
             message = temp.nextLine();
             if (message.equalsIgnoreCase("Grow")) {
                 test.grow();
@@ -30,7 +30,11 @@ public class Main {
             } else if (message.equalsIgnoreCase("First Hex")){
                 System.out.println("\n");
                 System.out.println(test.displayCenter());
+            } else if (message.equalsIgnoreCase("Find Hexes")){
+                int response = temp.nextInt();
+                test.connectedHexes(response);
             }
+
         }
     }
 }
