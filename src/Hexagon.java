@@ -3,12 +3,12 @@ import java.util.List;
 
 public class Hexagon {
     private int number;
-    private int n = 0;
-    private int ne = 0;
-    private int se = 0;
-    private int s = 0;
-    private int sw = 0;
-    private int nw = 0;
+    private int n = -1;
+    private int ne = -1;
+    private int se = -1;
+    private int s = -1;
+    private int sw = -1;
+    private int nw = -1;
 
     public Hexagon(int number) {
         this.number = number;
@@ -16,6 +16,26 @@ public class Hexagon {
 
 
     public int getNumber() {
+        if (number == 0){
+            if (n == 1){
+                number++;
+            }
+            if (ne == 1){
+                number++;
+            }
+            if (se == 1){
+                number++;
+            }
+            if (s == 1){
+                number++;
+            }
+            if (sw == 1){
+                number++;
+            }
+            if (nw == 1){
+                number++;
+            }
+        }
         return number;
     }
 

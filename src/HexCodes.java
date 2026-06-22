@@ -37,27 +37,27 @@ public class HexCodes {
         return colored;
     }
 
-    public int getNumber1() {
+    public int getNum1() {
         return number1;
     }
 
-    public int getNumber2() {
+    public int getNum2() {
         return number2;
     }
 
-    public int getNumber3() {
+    public int getNum3() {
         return number3;
     }
 
-    public int getNumber4() {
+    public int getNum4() {
         return number4;
     }
 
-    public int getNumber5() {
+    public int getNum5() {
         return number5;
     }
 
-    public int getNumber6() {
+    public int getNum6() {
         return number6;
     }
 }
