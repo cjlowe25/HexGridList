@@ -128,13 +128,14 @@ public class HexGrid {
         int size = (int)Math.sqrt((double) vertex / 6) + 1;
         int difference = vertex - (int)(6 * Math.pow(size, 2) - 12 * size + 7);
         System.out.println("size: " + size);
-        int a = (int)((1.0/3) * Math.pow(size, 3) + (1.0/2) * Math.pow(size, 2) - ((5.0/6) * size) + 1);
-        int b = (int)(6 * Math.pow(size + 1, 2) - (12 * size + 1) + 7);
+        int a = (int)(3 * Math.pow(size, 2) - (9 * size) + 8);
+//        int a = (int)((1.0/3) * Math.pow(size, 3) + (1.0/2) * Math.pow(size, 2) - ((5.0/6) * size) + 1);   potentially wrong
+        int b = (int)((3 * Math.pow(size + 1, 2)) - 3 * (size + 1) + 1);
         System.out.println("a: " + a);
         System.out.println("b: " + b);
         int splits = 0;
         if (size >= 3){
-            splits = 3 + (2 * (size - 3));
+            splits = 3 + (2 * (size - 2));
             int code = -1;
             int aIncrease = 1 + ((splits - 3) / 2);
             int bIncrease = 2 + ((splits - 3) / 2);
@@ -143,20 +144,45 @@ public class HexGrid {
             int limit = b + 1;
             System.out.println("difference: " + difference);
             System.out.println("splits: " + splits);
-            if ((inner - 3) % 2 == 1){
+            System.out.println("inner: " + inner);
+            if ((inner == 2) || (inner == 1)){ // ((inner - 3) % 2 == 1)
                 code = 0; // a, b, b + 1
+                System.out.println("scenario 1");
             }
-            else if ((inner - 3) % 2 == 0){
+            else if (inner == 3){
                 code = 1; // a, a + 1, b
             }
-            else if ((inner == 2) || (inner == 1)){
+            else if ((inner - 3) % 2 == 0){
                 code = 0;
+                System.out.println("scenario 2");
             }
+            else if ((inner - 3) % 2 == 1){ // ((inner == 2) || (inner == 1))
+                code = 1;
+                System.out.println("scenario 3");
+            }
+            System.out.println("a before inner fix: " + a);
+            System.out.println("b before inner fix: " + b);
             a += (aIncrease * modifier);
             b += (bIncrease * modifier);
-            if (inner >= 3){
-                a += 1 + ((inner - 3) / 2);
-                b += 2 + ((inner - 3) / 2);
+            System.out.println("");
+            System.out.println("");
+            System.out.println("a after inner fix: " + a); //Should be 14 or lower, is actually 15
+            System.out.println("b after inner fix: " + b);
+// The Issue is probably here.
+
+            if (inner > 3){
+                if ((inner - 3) % 2 == 0) {
+                    a += 1 + ((inner - 3) / 2);
+                    b += 2 + ((inner - 3) / 2);
+                }
+                else if ((inner - 3) % 2 == 1){
+                    a += 1 + ((inner - 4) / 2);
+                    b += 3 + ((inner - 4) / 2);
+                }
+            }
+            else if (inner == 3){            //YOU MUST BE THE ISSUE
+                a += 1;
+                b += 2;
             }
             else if (inner == 2){
                 b += 2;
@@ -165,18 +191,18 @@ public class HexGrid {
                 b += 1;
             }
             System.out.println("b before: " + b);
-            b = b % limit + (3 * (size) * (size - 1) + 2);
+            b = b % limit + (3 * (size) * (size - 1) + 2); //Makes sure b doesn't go to the next row
             System.out.println("b additive: " + (3 * (size) * (size - 1) + 2));
             System.out.println("Code: " + code);
             System.out.println("a: " + a);
             System.out.println("b: " + b);
             System.out.println("inner: " + inner);
 
-            if (code == 0){   // ab
-                System.out.println();
+            if (code == 1){   // ab
+                System.out.println("Inner Hexes: " + a + "\nOuter Hexes: " + b + ", " + (b + 1));
             }
-            else if (code == 1){ //   aa
-                System.out.println();
+            else if (code == 0){ //   aa
+                System.out.println("Inner Hexes: " + a + ", " + (a + 1) + "\nOuter Hexes: " + b);
             }
             else if (code == -1){   //in case of failure
                 System.out.println("Something went VERY wrong");
