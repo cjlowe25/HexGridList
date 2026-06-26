@@ -127,81 +127,50 @@ public class HexGrid {
     public void connectedHexes(int vertex){
         int size = (int)Math.sqrt((double) vertex / 6) + 1;
         int difference = vertex - (int)(6 * Math.pow(size, 2) - 12 * size + 7);
-        System.out.println("size: " + size);
-        int a = (int)(3 * Math.pow(size, 2) - (9 * size) + 8);
-//        int a = (int)((1.0/3) * Math.pow(size, 3) + (1.0/2) * Math.pow(size, 2) - ((5.0/6) * size) + 1);   potentially wrong
-        int b = (int)((3 * Math.pow(size + 1, 2)) - 3 * (size + 1) + 1);
-        System.out.println("a: " + a);
-        System.out.println("b: " + b);
-        int splits = 0;
-        if (size >= 3){
-            splits = 3 + (2 * (size - 2));
-            int code = -1;
-            int aIncrease = 1 + ((splits - 3) / 2);
-            int bIncrease = 2 + ((splits - 3) / 2);
+        int a = (int)(3 * Math.pow(size, 2) - (9 * size) + 8); // Beginning 'a' of the chosen size
+        int b = (int)((3 * Math.pow(size + 1, 2)) - 3 * (size + 1) + 1); // Beginning 'b' of the chosen size
+        int splits; // The length of the pattern
+        if (size > 1){ // size 1 is slightly different and needs it's own system, at least for the beginning
+            splits = 1 + (2 * (size - 1)); // Calculates the length of each pattern for that size
+            int code = -1; // Default code to -1 in case it isn't reassigned and we'll know something went wrong
+            int aIncrease = ((splits - 1) / 2);
+            int bIncrease = 1 + ((splits - 1) / 2);
             int modifier = difference / splits;
             int inner = difference % splits;
             int limit = b + 1;
-            System.out.println("difference: " + difference);
-            System.out.println("splits: " + splits);
-            System.out.println("inner: " + inner);
-            if ((inner == 2) || (inner == 1)){ // ((inner - 3) % 2 == 1)
-                code = 0; // a, b, b + 1
-                System.out.println("scenario 1");
+            if (inner == 1){ // ((inner - 3) % 2 == 1)
+                code = 1; // a, b, b + 1
             }
-            else if (inner == 3){
-                code = 1; // a, a + 1, b
+            else if ((inner - 1) % 2 == 0){
+                code = 1; // a, b, b + 1
             }
-            else if ((inner - 3) % 2 == 0){
-                code = 0;
-                System.out.println("scenario 2");
+            else if ((inner - 1) % 2 == 1){
+                code = 0; // a, a + 1, b
             }
-            else if ((inner - 3) % 2 == 1){ // ((inner == 2) || (inner == 1))
-                code = 1;
-                System.out.println("scenario 3");
-            }
-            System.out.println("a before inner fix: " + a);
-            System.out.println("b before inner fix: " + b);
             a += (aIncrease * modifier);
             b += (bIncrease * modifier);
-            System.out.println("");
-            System.out.println("");
-            System.out.println("a after inner fix: " + a); //Should be 14 or lower, is actually 15
-            System.out.println("b after inner fix: " + b);
-// The Issue is probably here.
 
-            if (inner > 3){
-                if ((inner - 3) % 2 == 0) {
-                    a += 1 + ((inner - 3) / 2);
-                    b += 2 + ((inner - 3) / 2);
+            if (inner > 1){ // If the last split is more than 1 in it
+                if ((inner - 1) % 2 == 0) {
+                    a += ((inner - 1) / 2);
+                    b += 1 + ((inner - 1) / 2);
                 }
-                else if ((inner - 3) % 2 == 1){
-                    a += 1 + ((inner - 4) / 2);
-                    b += 3 + ((inner - 4) / 2);
-                }
-            }
-            else if (inner == 3){            //YOU MUST BE THE ISSUE
-                a += 1;
-                b += 2;
-            }
-            else if (inner == 2){
-                b += 2;
-            }
+                else if ((inner - 1) % 2 == 1){
+                    a += ((inner - 2) / 2);
+                    b += 2 + ((inner - 2) / 2);
+                } // Basically just getting the exact numbers needed from the last
+            }     // split since we can't use the whole split like the others
             else if (inner == 1){
                 b += 1;
             }
-            System.out.println("b before: " + b);
+            System.out.println("B before fix: " + b);
             b = b % limit + (3 * (size) * (size - 1) + 2); //Makes sure b doesn't go to the next row
-            System.out.println("b additive: " + (3 * (size) * (size - 1) + 2));
-            System.out.println("Code: " + code);
-            System.out.println("a: " + a);
-            System.out.println("b: " + b);
-            System.out.println("inner: " + inner);
+            System.out.println("B after fix: " + b);
 
-            if (code == 1){   // ab
+            if (code == 1){   // a, b, b + 1
                 System.out.println("Inner Hexes: " + a + "\nOuter Hexes: " + b + ", " + (b + 1));
             }
-            else if (code == 0){ //   aa
+            else if (code == 0){ // a, a + 1, b
                 System.out.println("Inner Hexes: " + a + ", " + (a + 1) + "\nOuter Hexes: " + b);
             }
             else if (code == -1){   //in case of failure
