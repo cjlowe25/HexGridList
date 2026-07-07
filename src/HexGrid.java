@@ -125,18 +125,14 @@ public class HexGrid {
 //    }
 
     public void connectedHexes(int vertex){
-//        int size = (int)Math.sqrt(((double) vertex) / 6) + 1; //WRONG
         int size = (int)(Math.sqrt((((double)vertex - 1) / 6)));
-        System.out.println("Size: " + size);
         int difference = vertex - (int)(6 * Math.pow(size, 2) + 1);
         int a = 1; // Beginning 'a' of the chosen size
         int b = (int)(3 * Math.pow(size + 2, 2) - (3 * (size + 2)) + 1); // Beginning 'b' of the chosen size
-        System.out.println("b: " + b);
         int splits; // The length of the pattern
         if (size > 0) { // size 1 is slightly different and needs it's own system, at least for the beginning
             a = (int) (3 * Math.pow(size, 2) - (3 * size) + 2);
         }
-
 
         splits = 1 + (2 * (size)); // Calculates the length of each pattern for that size
         int code = -1; // Default code to -1 in case it isn't reassigned and we'll know something went wrong
@@ -144,8 +140,8 @@ public class HexGrid {
         int bIncrease = 1 + ((splits - 1) / 2);
         int modifier = difference / splits;
         int inner = difference % splits;
-        int blimit = b + 1;
-        int alimit = (int)((3 * Math.pow(size + 1, 2) - (3 * (size + 1)) + 2));
+        int bLimit = b + 1;
+        int aLimit = (int)((3 * Math.pow(size + 1, 2) - (3 * (size + 1)) + 2));
 
 
         if (inner == 1){ // ((inner - 3) % 2 == 1)
@@ -164,18 +160,6 @@ public class HexGrid {
         a += (aIncrease * modifier);
         b += (bIncrease * modifier);
 
-        System.out.println("B before fix: " + b);
-        if (b % blimit == 0){
-            b = (int)(3 * (Math.pow(size, 2)) - 3 * size + 2);
-            System.out.print("check1 hit");
-        }
-        else {
-            b = (int)(b % blimit + (3 * (Math.pow(size + 1, 2)) - 3 * (size + 1) + 2)); //Makes sure b doesn't go to the next row
-            System.out.println("check2 hit");
-        }
-        System.out.println("B after fix: " + b);
-
-
         if (inner > 1){ // If the last split is more than 1 in it
             if ((inner - 1) % 2 == 0) {
                 a += ((inner - 1) / 2);
@@ -189,23 +173,20 @@ public class HexGrid {
         else if (inner == 1){
             b += 1;
         }
+        if (b / bLimit >= 1){
+            b = (int)(b % (3 * (Math.pow(size + 2, 2)) - 3 * (size + 2) + 2) + ((3 * (Math.pow(size + 1, 2)) - 3 * (size + 1) + 2)));
+        }
         int nextB = -1;
         int nextA = -1;
 
-        if ((b + 1) % blimit == 0){
-            nextB = (int)(3 * Math.pow(size + 1, 2) - (3 * size) + 2);
+        if ((b + 1) % bLimit == 0){
+            nextB = (int)(3 * Math.pow(size + 1, 2) - (3 * (size + 1)) + 2);
         }
         else{
             nextB = b + 1;
         }
 
-        System.out.println("a: " + a);
-        System.out.println("b: " + b);
-
-        System.out.println("a limit: " + alimit);
-        System.out.println("b limit: " + blimit);
-
-        if ((a + 1) % alimit == 0){
+        if ((a + 1) % aLimit == 0){
             nextA = (int)(3 * Math.pow(size, 2) - (3 * size) + 2);
         }
         else{
@@ -222,4 +203,25 @@ public class HexGrid {
             System.out.println("Something went VERY wrong");
         }
     }
-}
+
+
+//    public void connectedVertices(int hex){ // Abandoned
+//        int size = 1;
+//        int a = 1;
+//        int b = -1;
+//        if (size == 2){
+//            a = 7;
+//        }
+//        else if (size == 3){
+//            a = 25;
+//        }
+//        else if (size > 3){
+//            a = a + (6 + (2 * (size - 2)) * 6);
+//        }
+//    }
+    public void adjacentHexes(int hex){ //Need a new size equation
+        int a = -1;
+        int b = -1;
+    }
+
+  }

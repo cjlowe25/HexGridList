@@ -7,7 +7,15 @@ public class Main {
         String message = "";
         HexGrid test = new HexGrid();
         test.createHexOptions();
-        boolean chatting = true;
+
+//        int response = temp.nextInt();
+//        test.connectedHexes(response);
+        for (int i = 1; i <= 54; i++){
+            System.out.println("Input: " + i);
+            test.connectedHexes(i);
+            System.out.println("");
+        }
+        boolean chatting = false; // Temporarily turned off
         while (chatting == true) {
             System.out.println("\nList Of Commands:\n-----------------------------------\nRadius\nHexagon Count\nVertex Count\nFind Hexes\nEnd");
             message = temp.nextLine();
@@ -31,8 +39,8 @@ public class Main {
                 System.out.println("\n");
                 System.out.println(test.displayCenter());
             } else if (message.equalsIgnoreCase("Find Hexes")){
-                int response = temp.nextInt();
-                test.connectedHexes(response);
+//                response = temp.nextInt();
+//                test.connectedHexes(response);
             }
 
         }
