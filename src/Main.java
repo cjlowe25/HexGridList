@@ -10,9 +10,9 @@ public class Main {
 
 //        int response = temp.nextInt();
 //        test.connectedHexes(response);
-        for (int i = 1; i <= 54; i++){
+        for (int i = 1; i <= 37; i++){
             System.out.println("Input: " + i);
-            test.connectedHexes(i);
+            System.out.println(test.adjacentHexes(i));
             System.out.println("");
         }
         boolean chatting = false; // Temporarily turned off
