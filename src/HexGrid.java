@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.Math;
-import java.util.Random;
 
 public class HexGrid {
 
@@ -51,7 +50,6 @@ public class HexGrid {
         hexOptions.add(new HexCodes(1, 1, 1, 1, 1, 1)); // 6
     }
 
-    Random rand = new Random();
 
 //    public void grow() {
 //
@@ -171,8 +169,8 @@ public class HexGrid {
         if (b / bLimit >= 1) {
             b = (int) (b % (3 * (Math.pow(size + 2, 2)) - 3 * (size + 2) + 2) + ((3 * (Math.pow(size + 1, 2)) - 3 * (size + 1) + 2)));
         }
-        int nextB = -1;
-        int nextA = -1;
+        int nextB;
+        int nextA;
 
         if ((b + 1) % bLimit == 0) {
             nextB = (int) (3 * Math.pow(size + 1, 2) - (3 * (size + 1)) + 2);
@@ -185,7 +183,7 @@ public class HexGrid {
         } else {
             nextA = a + 1;
         }
-        ArrayList<Integer> hexes = new ArrayList<Integer>();
+        ArrayList<Integer> hexes = new ArrayList<>();
 
         if (code == 1) {   // a, b, b + 1
             System.out.println("Inner Hexes: " + a + "\nOuter Hexes: " + b + ", " + nextB);
@@ -239,61 +237,38 @@ public class HexGrid {
         }
     }
 
-    public static ArrayList<Integer> adjacentHexes(int hex) { //Need a new size equation
-//        int size = (int)Math.ceil(((-1 + Math.sqrt((double)((4 * hex) - 1) / 3)) / 2));
+    public static ArrayList<Integer> adjacentHexes(int hex) {
         int size = (int) ((3 + Math.sqrt(12 * hex - 15)) / 6);
-        System.out.println(size);
-        int c = (int) (3 * Math.pow(size + 2, 2) - (3 * (size + 2)) + 1);
-        int b = (int) (3 * Math.pow(size, 2) - (3 * size) + 2);
-        int a = (int) (3 * Math.pow(size - 1, 2) - (3 * (size - 1)) + 2);
+        int c = (int) (3 * Math.pow(size + 2, 2) - (3 * (size + 2)) + 1); // Last hex of next size up
+        int b = (int) (3 * Math.pow(size, 2) - (3 * size) + 2); // Beginning hex of current size
+        int a = (int) (3 * Math.pow(size - 1, 2) - (3 * (size - 1)) + 2); // Beginning hex of one size down
         int aLimit = b;
         int bLimit = (int) (3 * Math.pow(size + 1, 2) - (3 * (size + 1)) + 2);
         int cLimit = (int) (3 * Math.pow(size + 2, 2) - (3 * (size + 2)) + 2);
         int difference = hex - b;
-        if (size == 1) {
+        if (size == 1) { // Special case for setting 'a' since size 1 doesn't work for this system otherwise
             a = 1;
-        } else if (size == 0) {
-            ArrayList<Integer> one = new ArrayList<Integer>();
+        } else if (size == 0) { // Special case since size 0 doesn't have an inner or an outer, depends on how you look at it.
+            ArrayList<Integer> one = new ArrayList<>();
             for (int i = 2; i < 8; i++) {
                 one.add(i);
             }
             return one;
         }
-        System.out.println("a before inner: " + a);
-        System.out.println("b before inner: " + b);
-        System.out.println("c before inner: " + c);
         int inner = difference % size; // Size is the same as the length of the pattern
-        System.out.println("difference: " + difference);
-        System.out.println("splits: " + size);
-        a += (size - 1) * (difference / size);
-        c += (2 * (difference / size)) + (difference / size) * (size - 1); //NOT RIGHT YET I THINK
-
-        System.out.println("a after initial change: " + a);
-        System.out.println("c after initial change; " + c);
-
-        // Inner calculations
-
-        if (inner > 0) {
-            a += (inner - 1);
+        a += (size - 1) * (difference / size); // Increase a by pattern length - 1 times the amount of times the pattern appears
+        c += (2 * (difference / size)) + (difference / size) * (size - 1); // 'c' is increased by 2 times # of pattern appearances
+                                                                    // then add # of pattern appearances times the size - 1
+        // Inner calculations                                       // since every entry after the first in the pattern increases 'c' by 1 instead of 2
+        if (inner > 0) { // if inner doesn't exist, no changes needed
+            a += (inner - 1); // every point after the first one increments 'a' by 1
             c += (2 + (inner - 1));
         }
-        System.out.println("c after inner increase: " + c);
-        // Now to validate the numbers
         if (c / cLimit > 0) {
-            System.out.println("c % by: " + (3 * Math.pow(size + 2, 2) - (3 * (size + 2)) + 2));
-            System.out.println("cLimit: " + cLimit);
-            c = (int) (c % cLimit + (3 * Math.pow(size + 1, 2) - (3 * (size + 1)) + 2)); //Pretty sure this is correct, issue is elsewhere
+            c = (int) (c % cLimit + (3 * Math.pow(size + 1, 2) - (3 * (size + 1)) + 2)); // wraps the 'c' around
         }
-        // Logic: given 65, should loop around to 41
-
-        System.out.println("a: " + a);
-        System.out.println("b: " + b);
-        System.out.println("c: " + c);
-        System.out.println("Inner: " + inner);
-
-        if ((size == 1) || ((size > 1) && (inner == 0))) {
-            System.out.println("Code 1");
-            ArrayList<Integer> sent = new ArrayList<Integer>();
+        if ((size == 1) || ((size > 1) && (inner == 0))) { // Special case needed for size == 1,
+            ArrayList<Integer> sent = new ArrayList<>(); // overall just determines what pattern is needed to return
             sent.add(a);
             sent.add(c);
             sent.add(fixHex(c, cLimit, (int) (3 * Math.pow(size + 1, 2) - (3 * (size + 1)) + 2), 1)); // c + 1
@@ -302,8 +277,7 @@ public class HexGrid {
             sent.add(fixHex(hex, (int) (3 * Math.pow(size + 1, 2) - (3 * (size + 1)) + 2), (int) (3 * Math.pow(size, 2) - (3 * (size)) + 1), 1)); // hex + 1
             return sent;
         } else if (inner > 0) {
-            System.out.println("Code 2");
-            ArrayList<Integer> sent = new ArrayList<Integer>();
+            ArrayList<Integer> sent = new ArrayList<>();
             sent.add(a);
             sent.add(fixHex(a, b, a - 1, 1)); // a + 1
             sent.add(c);
@@ -311,37 +285,10 @@ public class HexGrid {
             sent.add(fixHex(hex, (int) (3 * Math.pow(size + 1, 2) - (3 * (size + 1)) + 2), (int) (3 * Math.pow(size, 2) - (3 * (size)) + 1), -1)); // hex - 1
             sent.add(fixHex(hex, (int) (3 * Math.pow(size + 1, 2) - (3 * (size + 1)) + 2), (int) (3 * Math.pow(size, 2) - (3 * (size)) + 1), 1)); // hex + 1
             return sent;
-        } else {
+        } else { // Just in case something is horribly wrong and if neither if statement is true.
             System.out.println("SOMETHING IS WRONG");
             return null;
         }
-
-        // now returning arraylist of numbers
-//        if ((inner > 1) || ((inner == 0) && (size > 1))){
-//            ArrayList<Integer> sent = new ArrayList<Integer>();
-//            sent.add(a);
-//            sent.add(fixHex(a, b, b - 1, 1)); // a + 1
-//            sent.add(c);
-//            sent.add(fixHex(c, cLimit, (int)(3 * Math.pow(size + 1, 2) - (3 * (size + 1)) + 2), 1)); // c + 1
-//            sent.add(fixHex(hex, (int)(3 * Math.pow(size + 1, 2) - (3 * (size + 1)) + 2), (int)(3 * Math.pow(size, 2) - (3 * (size)) + 1), -1)); // hex - 1
-//            sent.add(fixHex(hex, (int)(3 * Math.pow(size + 1, 2) - (3 * (size + 1)) + 2), (int)(3 * Math.pow(size, 2) - (3 * (size)) + 1), 1)); // hex + 1
-//            return sent;
-//        }
-//        else if ((inner == 1) || ((inner == 0) && (size == 1))){
-//            ArrayList<Integer> sent = new ArrayList<Integer>();
-//            sent.add(a);
-//            sent.add(c);
-//            sent.add(fixHex(c, cLimit, (int)(3 * Math.pow(size + 1, 2) - (3 * (size + 1)) + 2), 1)); // c + 1
-//            sent.add(fixHex(c, cLimit, (int)(3 * Math.pow(size + 1, 2) - (3 * (size + 1)) + 2), 2)); // c + 1
-//            sent.add(fixHex(hex, (int)(3 * Math.pow(size + 1, 2) - (3 * (size + 1)) + 2), (int)(3 * Math.pow(size, 2) - (3 * (size)) + 1), -1)); // hex - 1
-//            sent.add(fixHex(hex, (int)(3 * Math.pow(size + 1, 2) - (3 * (size + 1)) + 2), (int)(3 * Math.pow(size, 2) - (3 * (size)) + 1), 1)); // hex + 1
-//            return sent;
-//        }
-//        else{
-//            System.out.println("inner: " + inner);
-//            System.out.println("something went wrong");
-//            return null;
-//        }
     }
 
   }
